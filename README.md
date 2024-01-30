@@ -11,6 +11,6 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-## License
+## LICENSE
 
-This project is in [MIT License]().
+This project is in [MIT LICENSE](https://github.com/amirkangarloo/todo-list/blob/master/LICENSE)
