@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TodoForm from './TodoForm';
 import { v4 as uuidv4 } from 'uuid';
 import Todo from './Todo';
 import TodoEditForm from './TodoEditForm';
 
 export default function TodoWrapper() {
-  const [list, setList] = useState([])
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const savedList = JSON.parse(localStorage.getItem('list')) || [];
+    setList(savedList);
+  }, [])
+  
 
   function addTask(newTask) {
     const newItem = {
@@ -14,7 +20,9 @@ export default function TodoWrapper() {
       isCompleted: false,
       isEditing: false
     }
-    setList([...list, newItem]);
+    const updateList = [...list, newItem]
+    setList(updateList);
+    updateStorage(updateList);
   }
 
   function editTask(taskId, updateTitle) {
@@ -22,11 +30,13 @@ export default function TodoWrapper() {
       return task.id === taskId ? { ...task, title: updateTitle, isEditing: !task.isEditing } : task;
     });
     setList(updateList);
+    updateStorage(updateList);
   }
   
   function deleteTask(taskId) {
     const updateList = list.filter(task => task.id !== taskId);
     setList(updateList);
+    updateStorage(updateList);
   }
   
   function toggleCompleted(taskId) {
@@ -34,6 +44,7 @@ export default function TodoWrapper() {
       return task.id === taskId ? { ...task, isCompleted: !task.isCompleted } : task;
     });
     setList(updateList);
+    updateStorage(updateList);
   }
   
   function toggleEditing(taskId) {
@@ -41,6 +52,11 @@ export default function TodoWrapper() {
       return task.id === taskId ? { ...task, isEditing: !task.isEditing } : task;
     });
     setList(updateList);
+    updateStorage(updateList);
+  }
+
+  function updateStorage(updateList) {
+    localStorage.setItem('list', JSON.stringify(updateList));
   }
 
   const tasklist = list.map(task => {
