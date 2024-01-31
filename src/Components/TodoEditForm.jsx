@@ -1,7 +1,8 @@
+
 import { useState } from 'react';
 
-export default function TodoForm({addTask}) {
-  const [value, setValue] = useState("")
+export default function TodoEditForm({ task, handelEdit }) {
+  const [value, setValue] = useState(task.title)
 
   function handelOnChange(event) {
     const value = event.target.value;
@@ -10,21 +11,22 @@ export default function TodoForm({addTask}) {
 
   function handelSubmit(event) {
     event.preventDefault();
-    addTask(value);
+    handelEdit(task.id, value);
     setValue("");
   }
-  
+
   return (
     <form className='TodoForm' onSubmit={handelSubmit}>
       <input
         type="text"
         className='todo-input'
-        placeholder='Write new task ...'
+        placeholder='Edit task ...'
         value={value}
         onChange={handelOnChange}
         autoFocus
       />
-      <button type='submit' className='todo-btn'>Add Task</button>
+      <button type='submit' className='todo-btn'>Edit Task</button>
     </form>
   )
 }
+
